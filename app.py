@@ -232,15 +232,14 @@ def internal_error(error):
     logger.error(f"Internal server error: {error}")
     return create_error_response("Internal server error", 500)
 
+# Initialize database on startup
+try:
+    db_manager.init_database()
+    logger.info("Database initialized successfully")
+except Exception as e:
+    logger.error(f"Failed to initialize database: {e}")
+
 if __name__ == '__main__':
-    # Initialize database
-    try:
-        db_manager.init_database()
-        logger.info("Database initialized successfully")
-    except Exception as e:
-        logger.error(f"Failed to initialize database: {e}")
-        exit(1)
-    
     # Start the application
     app.run(
         host=Config.HOST,
